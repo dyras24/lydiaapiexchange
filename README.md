@@ -1,2 +1,0 @@
-# lydiaapiexchange
-crypto exchange
