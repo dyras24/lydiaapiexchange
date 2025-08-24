@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const axios = require('axios');
+const axios = require("axios");
 
-// GET /api/market?from=BTC&to=USD&amount=1
-router.get('/', async (req, res) => {
+// GET /api/market?from=bitcoin&to=usd&amount=1
+router.get("/", async (req, res) => {
   const { from, to, amount } = req.query;
 
   if (!from || !to || !amount) {
@@ -11,26 +11,17 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${mapId(from)}&vs_currencies=${to.toLowerCase()}`;
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${from}&vs_currencies=${to}`;
     const response = await axios.get(url);
 
-    const rate = response.data[mapId(from)][to.toLowerCase()];
+    const rate = response.data[from][to];
     const result = rate * parseFloat(amount);
 
-    res.json({ from, to, amount, rate, result });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: "Failed to fetch price" });
+    res.json({ rate, result, from, to, amount });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Failed to fetch data" });
   }
 });
-
-function mapId(symbol) {
-  switch (symbol.toUpperCase()) {
-    case "BTC": return "bitcoin";
-    case "ETH": return "ethereum";
-    case "USDT": return "tether";
-    default: return symbol.toLowerCase();
-  }
-}
 
 module.exports = router;
