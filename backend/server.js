@@ -1,24 +1,20 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
 
-const marketRoutes = require("./routes/market");
-const exchangeRoutes = require("./routes/exchange");
-const portfolioRoutes = require("./routes/portfolio");
+import marketRoutes from "./routes/market.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// koneksi database
-const connectDB = require("./config/db");
-connectDB();
+// Routes
+app.use("/market", marketRoutes);
 
-// routes
-app.use("/api/market", marketRoutes);
-app.use("/api/exchange", exchangeRoutes);
-app.use("/api/portfolio", portfolioRoutes);
+// Health check
+app.get("/", (req, res) => {
+  res.json({ status: "Backend is running 🚀" });
+});
 
+// Railway PORT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
