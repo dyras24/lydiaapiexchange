@@ -6,15 +6,17 @@
   <title>Lydia Crypto Exchange</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/src/css/styles.css">
+  <link rel="stylesheet" href="/src/css/styles.css" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="/assets/logo.png" alt="Lydia Exchange Logo" width="80">
+      <!-- Logo utama (pastikan ada di public/assets/logo.png) -->
+      <img src="/assets/logo.png" alt="Lydia Exchange Logo" width="100" />
       <h1>Lydia Crypto Exchange</h1>
     </div>
     <nav>
@@ -30,7 +32,7 @@
     <section class="converter">
       <h2>Crypto Converter</h2>
       <div class="converter-box">
-        <input type="number" id="amount" placeholder="0.00" min="0">
+        <input type="number" id="amount" placeholder="0.00" min="0" />
         <select id="from-currency">
           <option value="BTC">Bitcoin (BTC)</option>
           <option value="ETH">Ethereum (ETH)</option>
