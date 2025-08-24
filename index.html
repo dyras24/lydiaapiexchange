@@ -6,7 +6,7 @@
   <title>Lydia Crypto Exchange</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/src/css/styles.css" />
+  <link rel="stylesheet" href="/src/css/style.css" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
@@ -16,8 +16,7 @@
 <body>
   <header>
     <div class="logo">
-      <!-- Logo utama -->
-      <img src="/public/assets/logo.png" alt="Lydia Exchange Logo" width="80" />
+      <img src="/public/assets/logo.png" alt="Lydia Exchange Logo" width="60" />
       <h1>Lydia Crypto Exchange</h1>
     </div>
     <nav>
@@ -27,6 +26,8 @@
         <li><a href="#">Portfolio</a></li>
       </ul>
     </nav>
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle">🌙</button>
   </header>
 
   <main>
@@ -67,5 +68,14 @@
   <script src="/src/js/api.js"></script>
   <script src="/src/js/app.js"></script>
   <script src="/src/js/chart.js"></script>
+
+  <!-- Dark Mode Script -->
+  <script>
+    const toggle = document.getElementById('darkModeToggle');
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+  </script>
 </body>
 </html>
