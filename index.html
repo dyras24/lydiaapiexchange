@@ -72,9 +72,27 @@
   <!-- Dark Mode Script -->
   <script>
     const toggle = document.getElementById('darkModeToggle');
+
+    // cek preferensi OS
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark-mode');
+      toggle.textContent = '☀️';
+    }
+
     toggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    });
+
+    // update otomatis kalau user ganti theme di OS
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (e.matches) {
+        document.body.classList.add('dark-mode');
+        toggle.textContent = '☀️';
+      } else {
+        document.body.classList.remove('dark-mode');
+        toggle.textContent = '🌙';
+      }
     });
   </script>
 </body>
