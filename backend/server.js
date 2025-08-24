@@ -15,9 +15,13 @@ app.use(express.json());
 connectDB();
 
 // Routes
-app.use("/api/market", require("./routes/market"));
-app.use("/api/exchange", require("./routes/exchange"));
-app.use("/api/portfolio", require("./routes/portfolio"));
+const marketRoutes = require("./routes/market");
+const exchangeRoutes = require("./routes/exchange");
+const portfolioRoutes = require("./routes/portfolio");
+
+app.use("/api/market", marketRoutes);
+app.use("/api/exchange", exchangeRoutes);
+app.use("/api/portfolio", portfolioRoutes);
 
 // Port dari Railway (harus pakai process.env.PORT)
 const PORT = process.env.PORT || 5000;
