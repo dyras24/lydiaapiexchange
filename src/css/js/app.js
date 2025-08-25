@@ -1,14 +1,33 @@
-document.getElementById('convert-btn').addEventListener('click', async () => {
-  const amount = document.getElementById('amount').value;
-  const from = document.getElementById('from-currency').value;
-  const to = document.getElementById('to-currency').value;
+// src/js/app.js
+import { getMarketPrice } from "./api.js";
 
-  const data = await getPrice(from, to, amount);
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("#converter-form");
+  const resultBox = document.querySelector("#result");
 
-  if (data.error) {
-    document.getElementById('result').innerText = "Error fetching price";
-  } else {
-    document.getElementById('result').innerText =
-      `${amount} ${from} = ${data.result.toFixed(2)} ${to} (Rate: ${data.rate})`;
-  }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fromSymbol = document.querySelector("#fromCoin").value.toLowerCase();
+    const amount = parseFloat(document.querySelector("#amount").value);
+
+    if (!amount || amount <= 0) {
+      resultBox.innerHTML = "⚠️ Masukkan jumlah valid!";
+      return;
+    }
+
+    // Fetch harga dari CoinGecko
+    const price = await getMarketPrice(fromSymbol);
+
+    if (!price) {
+      resultBox.innerHTML = `❌ Gagal ambil harga ${fromSymbol}`;
+      return;
+    }
+
+    const totalUSD = amount * price;
+    resultBox.innerHTML = `
+      <p>💰 Harga 1 ${fromSymbol.toUpperCase()} = $${price}</p>
+      <p>📊 Total = $${totalUSD.toFixed(2)}</p>
+    `;
+  });
 });
