@@ -1,12 +1,24 @@
 const API_BASE = "https://api.coingecko.com/api/v3";
 
+// mapping symbol ke ID coingecko
+const coinMap = {
+  BTC: "bitcoin",
+  ETH: "ethereum",
+  BNB: "binancecoin",
+  SOL: "solana",
+  DOGE: "dogecoin",
+  USDT: "tether"
+};
+
 // === KONVERTER ===
 document.getElementById("convert-btn").addEventListener("click", async (e) => {
   e.preventDefault();
 
   const amount = document.getElementById("amount").value;
-  const from = document.getElementById("from-currency").value.toLowerCase();
-  const to = document.getElementById("to-currency").value.toLowerCase();
+  const fromSymbol = document.getElementById("from-currency").value;
+  const toCurrency = document.getElementById("to-currency").value.toLowerCase();
+
+  const fromId = coinMap[fromSymbol]; // ambil ID dari mapping
 
   if (!amount || amount <= 0) {
     document.getElementById("result").innerText = "Masukkan jumlah valid!";
@@ -14,14 +26,17 @@ document.getElementById("convert-btn").addEventListener("click", async (e) => {
   }
 
   try {
-    const res = await fetch(`${API_BASE}/simple/price?ids=${from}&vs_currencies=${to}`);
+    const res = await fetch(`${API_BASE}/simple/price?ids=${fromId}&vs_currencies=${toCurrency}`);
     const data = await res.json();
 
-    if (data[from] && data[from][to]) {
-      const price = data[from][to];
+    if (data[fromId] && data[fromId][toCurrency]) {
+      const price = data[fromId][toCurrency];
       const converted = amount * price;
       document.getElementById("result").innerText =
-        `${amount} ${from.toUpperCase()} = ${converted.toLocaleString()} ${to.toUpperCase()}`;
+        `${amount} ${fromSymbol} = ${converted.toLocaleString()} ${toCurrency.toUpperCase()}`;
+
+      // update chart sesuai pilihan
+      loadChart(fromId, toCurrency);
     } else {
       document.getElementById("result").innerText = "⚠️ Data harga tidak ditemukan.";
     }
@@ -62,7 +77,7 @@ async function loadChart(coin = "bitcoin", currency = "usd") {
       data: {
         labels,
         datasets: [{
-          label: `${coin.toUpperCase()} Price (last 7 days)`,
+          label: `${coin.toUpperCase()} Price (7 days)`,
           data: prices,
           borderColor: "#4CAF50",
           backgroundColor: "rgba(76, 175, 80, 0.2)",
@@ -72,9 +87,7 @@ async function loadChart(coin = "bitcoin", currency = "usd") {
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: true },
-        },
+        plugins: { legend: { display: true } },
         scales: {
           x: { display: true },
           y: { display: true }
