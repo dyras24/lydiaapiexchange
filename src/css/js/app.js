@@ -1,33 +1,42 @@
 // src/js/app.js
-import { getMarketPrice } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("#converter-form");
-  const resultBox = document.querySelector("#result");
+  const form = document.getElementById("converter-form");
+  const resultBox = document.getElementById("result");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const fromSymbol = document.querySelector("#fromCoin").value.toLowerCase();
-    const amount = parseFloat(document.querySelector("#amount").value);
+    const fromCoin = document.getElementById("fromCoin").value; // ex: bitcoin
+    const amount = parseFloat(document.getElementById("amount").value);
 
     if (!amount || amount <= 0) {
-      resultBox.innerHTML = "⚠️ Masukkan jumlah valid!";
+      resultBox.textContent = "⚠️ Masukkan jumlah yang valid.";
       return;
     }
 
-    // Fetch harga dari CoinGecko
-    const price = await getMarketPrice(fromSymbol);
+    try {
+      // Fetch harga dari CoinGecko
+      const res = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${fromCoin}&vs_currencies=usd`
+      );
+      const data = await res.json();
 
-    if (!price) {
-      resultBox.innerHTML = `❌ Gagal ambil harga ${fromSymbol}`;
-      return;
+      if (!data[fromCoin]) {
+        resultBox.textContent = "⚠️ Gagal ambil harga coin.";
+        return;
+      }
+
+      const price = data[fromCoin].usd;
+      const total = price * amount;
+
+      resultBox.innerHTML = `
+        <p>💰 1 ${fromCoin.toUpperCase()} = $${price.toLocaleString()}</p>
+        <p>📊 ${amount} ${fromCoin.toUpperCase()} = <strong>$${total.toLocaleString()}</strong></p>
+      `;
+    } catch (err) {
+      console.error(err);
+      resultBox.textContent = "❌ Error ambil data harga.";
     }
-
-    const totalUSD = amount * price;
-    resultBox.innerHTML = `
-      <p>💰 Harga 1 ${fromSymbol.toUpperCase()} = $${price}</p>
-      <p>📊 Total = $${totalUSD.toFixed(2)}</p>
-    `;
   });
 });
