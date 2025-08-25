@@ -33,23 +33,24 @@
   <main>
     <section class="converter">
       <h2>Crypto Converter</h2>
-      <form id="converter-form">
-        <input type="number" id="amount" placeholder="0.00" min="0" required />
-        <select id="fromCoin">
+      <div class="converter-box">
+        <input type="number" id="amount" placeholder="0.00" min="0" />
+        <select id="from-currency">
           <option value="bitcoin">Bitcoin (BTC)</option>
           <option value="ethereum">Ethereum (ETH)</option>
-          <option value="binancecoin">Binance Coin (BNB)</option>
+          <option value="binancecoin">BNB</option>
           <option value="solana">Solana (SOL)</option>
           <option value="dogecoin">Dogecoin (DOGE)</option>
           <option value="tether">Tether (USDT)</option>
         </select>
-        <select id="toCurrency">
+        <button id="swap-btn">⇄</button>
+        <select id="to-currency">
           <option value="usd">US Dollar (USD)</option>
           <option value="idr">Indonesian Rupiah (IDR)</option>
           <option value="eur">Euro (EUR)</option>
         </select>
-        <button type="submit">Convert</button>
-      </form>
+        <button id="convert-btn">Convert</button>
+      </div>
       <div id="result" class="result-box"></div>
     </section>
 
@@ -72,19 +73,14 @@
   <!-- Dark Mode Script -->
   <script>
     const toggle = document.getElementById('darkModeToggle');
-
-    // cek preferensi OS
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.body.classList.add('dark-mode');
       toggle.textContent = '☀️';
     }
-
     toggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
     });
-
-    // update otomatis kalau user ganti theme di OS
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (e.matches) {
         document.body.classList.add('dark-mode');
