@@ -1,16 +1,24 @@
-const express = require("express");
-const router = express.Router();
-const axios = require("axios");
+import express from "express";
+import axios from "axios";
 
-// Contoh route GET Market data
-router.get("/", async (req, res) => {
+const router = express.Router();
+
+// GET /market/:symbol
+// contoh: /market/bitcoin → { "bitcoin": { "usd": 68000 } }
+router.get("/:symbol", async (req, res) => {
+  const { symbol } = req.params;
   try {
-    // Contoh ambil data dari CoinGecko
-    const response = await axios.get("https://api.coingecko.com/api/v3/ping");
-    res.json({ status: "Market API OK ✅", data: response.data });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const response = await axios.get("https://api.coingecko.com/api/v3/simple/price", {
+      params: {
+        ids: symbol,          // coin id dari coingecko
+        vs_currencies: "usd"  // default USD
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching price:", error.message);
+    res.status(500).json({ error: "Failed to fetch price" });
   }
 });
 
-module.exports = router;
+export default router;
