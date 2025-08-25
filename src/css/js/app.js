@@ -1,27 +1,40 @@
-// app.js
-document.getElementById("converter-form").addEventListener("submit", async (e) => {
+const API_URL = "https://api.coingecko.com/api/v3/simple/price";
+
+document.getElementById("convert-btn").addEventListener("click", async (e) => {
   e.preventDefault();
 
   const amount = document.getElementById("amount").value;
-  const fromCoin = document.getElementById("fromCoin").value;
-  const toCurrency = document.getElementById("toCurrency").value;
-  const resultBox = document.getElementById("result");
+  const from = document.getElementById("from-currency").value.toLowerCase();
+  const to = document.getElementById("to-currency").value.toLowerCase();
+
+  if (!amount || amount <= 0) {
+    document.getElementById("result").innerText = "Masukkan jumlah valid!";
+    return;
+  }
 
   try {
-    const res = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${fromCoin}&vs_currencies=${toCurrency}`
-    );
+    const res = await fetch(`${API_URL}?ids=${from}&vs_currencies=${to}`);
     const data = await res.json();
 
-    if (data[fromCoin] && data[fromCoin][toCurrency]) {
-      const price = data[fromCoin][toCurrency];
+    if (data[from] && data[from][to]) {
+      const price = data[from][to];
       const converted = amount * price;
-      resultBox.innerHTML = `<strong>${amount} ${fromCoin.toUpperCase()}</strong> = ${converted.toLocaleString()} ${toCurrency.toUpperCase()}`;
+      document.getElementById("result").innerText =
+        `${amount} ${from.toUpperCase()} = ${converted.toLocaleString()} ${to.toUpperCase()}`;
     } else {
-      resultBox.innerHTML = "⚠️ Gagal ambil harga.";
+      document.getElementById("result").innerText = "Data harga tidak ditemukan.";
     }
   } catch (err) {
+    document.getElementById("result").innerText = "Gagal ambil harga!";
     console.error(err);
-    resultBox.innerHTML = "❌ Error fetch harga dari CoinGecko";
   }
+});
+
+// Swap tombol ⇄
+document.getElementById("swap-btn").addEventListener("click", () => {
+  const fromSelect = document.getElementById("from-currency");
+  const toSelect = document.getElementById("to-currency");
+  const temp = fromSelect.value;
+  fromSelect.value = toSelect.value;
+  toSelect.value = temp;
 });
