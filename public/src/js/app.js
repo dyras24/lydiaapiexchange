@@ -1,12 +1,14 @@
-document.getElementById("convert-btn").addEventListener("click", async (e) => {
-  e.preventDefault();
+// Converter
+const convertBtn = document.getElementById("convert-btn");
+const swapBtn = document.getElementById("swap-btn");
 
+convertBtn.addEventListener("click", async () => {
   const amount = document.getElementById("amount").value;
-  const from = document.getElementById("from-currency").value; // pakai id coingecko
+  const from = document.getElementById("from-currency").value.toLowerCase();
   const to = document.getElementById("to-currency").value.toLowerCase();
 
-  if (!amount || amount <= 0) {
-    document.getElementById("result").innerText = "⚠️ Masukkan jumlah valid!";
+  if (!amount) {
+    document.getElementById("result").textContent = "⚠️ Masukkan jumlah!";
     return;
   }
 
@@ -16,16 +18,32 @@ document.getElementById("convert-btn").addEventListener("click", async (e) => {
     );
     const data = await res.json();
 
-    if (data[from] && data[from][to]) {
-      const price = data[from][to];
-      const converted = amount * price;
-      document.getElementById("result").innerText =
-        `${amount} ${from.toUpperCase()} = ${converted.toLocaleString()} ${to.toUpperCase()}`;
-    } else {
-      document.getElementById("result").innerText = "⚠️ Harga tidak ditemukan.";
+    if (!data[from]) {
+      document.getElementById("result").textContent = "⚠️ Harga tidak tersedia!";
+      return;
+    }
+
+    const rate = data[from][to];
+    const total = amount * rate;
+
+    document.getElementById("result").textContent =
+      `${amount} ${from.toUpperCase()} = ${total.toLocaleString()} ${to.toUpperCase()}`;
+
+    // Update chart juga
+    if (window.loadChart) {
+      window.loadChart(from, to);
     }
   } catch (err) {
-    document.getElementById("result").innerText = "⚠️ Error ambil data!";
-    console.error(err);
+    document.getElementById("result").textContent = "❌ Error ambil data!";
   }
+});
+
+// Tombol Swap ⇄
+swapBtn.addEventListener("click", () => {
+  const fromSelect = document.getElementById("from-currency");
+  const toSelect = document.getElementById("to-currency");
+
+  const temp = fromSelect.value;
+  fromSelect.value = toSelect.value;
+  toSelect.value = temp;
 });
