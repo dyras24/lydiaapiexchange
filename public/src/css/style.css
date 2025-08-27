@@ -1,23 +1,21 @@
-/* ====== Reset & Global ====== */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: #f8f9fa;
-  color: #212529;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #222;
   line-height: 1.6;
-  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* ====== Header ====== */
 header {
-  background: #fff;
+  background: #ffffff;
   border-bottom: 1px solid #ddd;
-  padding: 15px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,72 +27,36 @@ header .logo {
   gap: 10px;
 }
 
-header .logo img {
-  width: 60px;
-  height: auto;
-}
-
-header h1 {
-  font-size: 1.5rem;
-  color: #0d6efd;
-}
-
 header nav ul {
   display: flex;
   list-style: none;
   gap: 20px;
 }
 
-header nav ul li a {
+header nav a {
   text-decoration: none;
   color: #333;
-  font-weight: 500;
-  transition: color 0.3s;
+  font-weight: bold;
 }
 
-header nav ul li a:hover,
-header nav ul li a.active {
-  color: #0d6efd;
+header nav a.active {
+  color: #0077ff;
 }
 
-/* ====== Dark Mode Toggle Button ====== */
 #darkModeToggle {
-  margin-left: 20px;
-  padding: 8px 12px;
   border: none;
-  border-radius: 8px;
+  background: transparent;
+  font-size: 20px;
   cursor: pointer;
-  font-size: 1.2rem;
-  background: #fff;
-  color: #0d6efd;
-  transition: background 0.3s, color 0.3s;
 }
 
-#darkModeToggle:hover {
-  background: #e9ecef;
-}
-
-body.dark-mode #darkModeToggle {
-  background: #333;
-  color: #ffc107;
-}
-
-/* ====== Converter Section ====== */
 main {
   padding: 20px;
   max-width: 900px;
-  margin: 0 auto;
+  margin: auto;
 }
 
-.converter, .market-data {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-  margin-bottom: 30px;
-  transition: background 0.4s ease, color 0.4s ease;
-}
-
+/* Converter */
 .converter-box {
   display: flex;
   align-items: center;
@@ -102,87 +64,64 @@ main {
   margin-top: 15px;
 }
 
-.converter-box input, 
-.converter-box select, 
+.converter-box input,
+.converter-box select,
 .converter-box button {
   padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  outline: none;
+  font-size: 16px;
 }
 
 .converter-box button {
-  background: #0d6efd;
-  color: #fff;
-  border: none;
   cursor: pointer;
-  transition: background 0.3s;
-}
-
-.converter-box button:hover {
-  background: #0b5ed7;
 }
 
 .result-box {
   margin-top: 15px;
-  padding: 15px;
-  background: #f1f3f5;
+  padding: 10px;
+  background: #f1f1f1;
   border-radius: 6px;
-  font-weight: bold;
-  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* ====== Market Data ====== */
+/* Chart */
 .chart-container {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
-/* ====== Footer ====== */
+/* Footer */
 footer {
   text-align: center;
   padding: 15px;
-  background: #f8f9fa;
-  color: #555;
-  border-top: 1px solid #ddd;
-  transition: background 0.4s ease, color 0.4s ease;
+  background: #f1f1f1;
+  margin-top: 30px;
 }
 
-/* ====== Dark Mode ====== */
+/* ================= */
+/* DARK MODE STYLING */
+/* ================= */
 body.dark-mode {
   background: #121212;
-  color: #f1f1f1;
+  color: #f5f5f5;
 }
 
 body.dark-mode header {
   background: #1f1f1f;
-  color: #fff;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #444;
 }
 
-body.dark-mode header nav ul li a {
-  color: #ddd;
+body.dark-mode nav a {
+  color: #ccc;
 }
 
-body.dark-mode header nav ul li a:hover,
-body.dark-mode header nav ul li a.active {
-  color: #ffc107;
-}
-
-body.dark-mode .converter,
-body.dark-mode .market-data {
-  background: #1e1e1e;
-  color: #f1f1f1;
-  box-shadow: 0 3px 8px rgba(255,255,255,0.05);
+body.dark-mode nav a.active {
+  color: #4da6ff;
 }
 
 body.dark-mode .result-box {
-  background: #2b2b2b;
-  color: #fff;
+  background: #2c2c2c;
+  border: 1px solid #555;
 }
 
 body.dark-mode footer {
   background: #1f1f1f;
   color: #aaa;
-  border-top: 1px solid #333;
 }
